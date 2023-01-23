@@ -1,0 +1,130 @@
+package pkg;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.FileHandler;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+
+public class Vrlbuspgm {
+	//WebDriver driver;
+	ChromeDriver driver;
+	@ BeforeTest
+	public void setup() {
+		driver=new ChromeDriver();
+		driver.get("https://www.vrlbus.in/vrl2013/register_customer.aspx");	
+		}
+	@ Test(priority=1)
+	public void titleverifcn (){
+		String title=driver.getTitle();
+		String e="Vijayanand Travels Private Ltd | ONLINE BUS TICKET BOOKINGS & TRAVEL SERVICES";
+		
+		if(title.contains(e)) {
+			System.out.println("Vijayanand Travels text contains");
+		}
+		else {
+			System.out.println("false");	
+		}
+		
+	}
+	@ Test(priority=2)
+	public void registerinpageverifcn (){
+		
+		 String t = "Register";
+	      List<WebElement> l= driver.findElements(By.xpath("//*[contains(text(),'Register')]"));
+	      // verify list size
+	      if ( l.size() > 0){
+	         System.out.println("Text: " + t + " is present. ");
+	      } else {
+	         System.out.println("Text: " + t + " is not present. ");
+	      }
+	}
+	@ Test(priority=3)
+	public void linkcount (){
+		
+		List<WebElement>l=driver.findElements(By.tagName("a"));
+		System.out.println(l.size());
+		if(l.size()==40) {
+			System.out.println("link count is"+l.size());
+		}
+		else {
+			System.out.println("link count is not 40.Its "+l.size());	
+		}
+	}
+	
+	
+	
+	@ Test(priority=4)
+	public void registeverifcn (){
+	String register= driver.findElement(By.xpath("//*[@id=\"Button1\"]")).getAttribute("value");
+	System.out.println(register);
+	String e="Register";
+	if(e.equals(register)) {
+		System.out.println("Button text is register");
+	}
+	else {
+		System.out.println("Button text is false");	
+	}	
+
+}
+	@ Test(priority=5)
+	public void dropdowncount (){
+		
+		Select day = new Select(driver.findElement(By.xpath("//*[@id=\"CITYID\"]")));
+		List<WebElement> l = day.getOptions();
+	    int s= l.size();
+	    if(l.size()==40) {
+			System.out.println("city count is"+l.size());
+		}
+		else {
+			System.out.println("city count is not 25.Its "+s);	
+		}
+	
+	}
+	
+	
+	@ Test(priority=6)
+	public void checkboxenable (){
+		
+		boolean test=driver.findElement(By.xpath("//*[@id=\"terms_conditions\"]")).isEnabled();
+		if (test)
+		{
+		    System.out.println("check box selected");
+		}
+		else{
+		    System.out.println("checkbox not selected");
+		}
+	}
+	
+	
+	@ Test(priority=7)
+	public void fillfields () throws IOException{
+		
+		driver.findElement(By.xpath("//*[@id=\"FIRSTNAME\"]")).sendKeys("Test");
+		driver.findElement(By.xpath("//*[@id=\"LASTNAME\"]")).sendKeys("test");
+		driver.findElement(By.xpath("//*[@id=\"MOBILENUMBER\"]")).sendKeys("123456789");
+		driver.findElement(By.xpath("//*[@id=\"COMPANY\"]")).sendKeys("Test");
+		driver.findElement(By.xpath("//*[@id=\"ADDRESS\"]")).sendKeys("Test");
+		driver.findElement(By.xpath("//*[@id=\"POSTALCODE\"]")).sendKeys("1995");
+		driver.findElement(By.xpath("//*[@id=\"STATEID\"]")).sendKeys("KERALA");
+		driver.findElement(By.xpath("//*[@id=\"CITYID\"]")).sendKeys("ADONI");
+		driver.findElement(By.xpath("//*[@id=\"LOGINNAME\"]")).sendKeys("test@gmil.com");
+		JavascriptExecutor js=(JavascriptExecutor)driver;
+		js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+		driver.findElement(By.xpath("//*[@id=\"Button1\"]")).click();
+		driver.findElement(By.xpath("/html/body/form/div[3]/div[5]/div/table/tbody/tr[2]/td/table/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[22]/td[1]/input")).click();
+		Alert a=driver.switchTo().alert();
+		a.accept();//for accepting
+			
+	}
+}
+
